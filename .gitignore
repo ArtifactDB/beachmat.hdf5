@@ -1,0 +1,6 @@
+*.so
+*.o
+*.html
+inst/Checks/
+inst/include/source-*
+*.rds
