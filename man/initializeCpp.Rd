@@ -6,14 +6,17 @@
 \alias{initializeCpp,HDF5ArraySeed-method}
 \title{Initialize HDF5-backed matrices.}
 \usage{
-\S4method{initializeCpp}{H5SparseMatrixSeed}(x, ...)
+\S4method{initializeCpp}{H5SparseMatrixSeed}(x, ..., memorize = FALSE)
 
-\S4method{initializeCpp}{HDF5ArraySeed}(x, ...)
+\S4method{initializeCpp}{HDF5ArraySeed}(x, ..., memorize = FALSE)
 }
 \arguments{
 \item{x}{A \pkg{HDF5Array} seed object.}
 
 \item{...}{Further arguments, ignored.}
+
+\item{memorize}{Logical scalar specifying whether to load the matrix data in \code{x} into memory, if it has not already been loaded.
+See \code{\link{checkMemoryCache}} for details.}
 }
 \value{
 An external pointer that can be used in any \pkg{tatami}-compatible function.
