@@ -35,10 +35,54 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// load_into_memory_sparse
+SEXP load_into_memory_sparse(std::string file, std::string name, int nrow, int ncol, bool byrow, bool forced_int);
+RcppExport SEXP _beachmat_hdf5_load_into_memory_sparse(SEXP fileSEXP, SEXP nameSEXP, SEXP nrowSEXP, SEXP ncolSEXP, SEXP byrowSEXP, SEXP forced_intSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
+    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< int >::type nrow(nrowSEXP);
+    Rcpp::traits::input_parameter< int >::type ncol(ncolSEXP);
+    Rcpp::traits::input_parameter< bool >::type byrow(byrowSEXP);
+    Rcpp::traits::input_parameter< bool >::type forced_int(forced_intSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_into_memory_sparse(file, name, nrow, ncol, byrow, forced_int));
+    return rcpp_result_gen;
+END_RCPP
+}
+// load_into_memory_dense
+SEXP load_into_memory_dense(std::string file, std::string name, bool forced_int);
+RcppExport SEXP _beachmat_hdf5_load_into_memory_dense(SEXP fileSEXP, SEXP nameSEXP, SEXP forced_intSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
+    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< bool >::type forced_int(forced_intSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_into_memory_dense(file, name, forced_int));
+    return rcpp_result_gen;
+END_RCPP
+}
+// load_into_memory_dense_as_sparse
+SEXP load_into_memory_dense_as_sparse(std::string file, std::string name, bool forced_int, int cache_size, bool byrow);
+RcppExport SEXP _beachmat_hdf5_load_into_memory_dense_as_sparse(SEXP fileSEXP, SEXP nameSEXP, SEXP forced_intSEXP, SEXP cache_sizeSEXP, SEXP byrowSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::traits::input_parameter< std::string >::type file(fileSEXP);
+    Rcpp::traits::input_parameter< std::string >::type name(nameSEXP);
+    Rcpp::traits::input_parameter< bool >::type forced_int(forced_intSEXP);
+    Rcpp::traits::input_parameter< int >::type cache_size(cache_sizeSEXP);
+    Rcpp::traits::input_parameter< bool >::type byrow(byrowSEXP);
+    rcpp_result_gen = Rcpp::wrap(load_into_memory_dense_as_sparse(file, name, forced_int, cache_size, byrow));
+    return rcpp_result_gen;
+END_RCPP
+}
 
 static const R_CallMethodDef CallEntries[] = {
     {"_beachmat_hdf5_initialize_from_hdf5_sparse", (DL_FUNC) &_beachmat_hdf5_initialize_from_hdf5_sparse, 5},
     {"_beachmat_hdf5_initialize_from_hdf5_dense", (DL_FUNC) &_beachmat_hdf5_initialize_from_hdf5_dense, 2},
+    {"_beachmat_hdf5_load_into_memory_sparse", (DL_FUNC) &_beachmat_hdf5_load_into_memory_sparse, 6},
+    {"_beachmat_hdf5_load_into_memory_dense", (DL_FUNC) &_beachmat_hdf5_load_into_memory_dense, 3},
+    {"_beachmat_hdf5_load_into_memory_dense_as_sparse", (DL_FUNC) &_beachmat_hdf5_load_into_memory_dense_as_sparse, 5},
     {NULL, NULL, 0}
 };
 

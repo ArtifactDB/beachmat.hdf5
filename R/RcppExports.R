@@ -9,3 +9,15 @@ initialize_from_hdf5_dense <- function(file, name) {
     .Call('_beachmat_hdf5_initialize_from_hdf5_dense', PACKAGE = 'beachmat.hdf5', file, name)
 }
 
+load_into_memory_sparse <- function(file, name, nrow, ncol, byrow, forced_int) {
+    .Call('_beachmat_hdf5_load_into_memory_sparse', PACKAGE = 'beachmat.hdf5', file, name, nrow, ncol, byrow, forced_int)
+}
+
+load_into_memory_dense <- function(file, name, forced_int) {
+    .Call('_beachmat_hdf5_load_into_memory_dense', PACKAGE = 'beachmat.hdf5', file, name, forced_int)
+}
+
+load_into_memory_dense_as_sparse <- function(file, name, forced_int, cache_size, byrow) {
+    .Call('_beachmat_hdf5_load_into_memory_dense_as_sparse', PACKAGE = 'beachmat.hdf5', file, name, forced_int, cache_size, byrow)
+}
+
