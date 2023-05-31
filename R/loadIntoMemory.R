@@ -27,13 +27,13 @@ loadIntoMemory <- function(x, force.integer=FALSE) {
 
     # Can't be bothered to set up a generic just for this.
     if (is(x, "HDF5ArraySeed")) {
-        if (x@sparse) {
+        if (x@as_sparse) {
             load_into_memory_dense_as_sparse(x@filepath, x@name, forced_int=force.integer, byrow=FALSE, cache_size=getAutoBlockSize())
         } else {
             load_into_memory_dense(x@filepath, x@name, forced_int=force.integer)
         }
     } else if (is(x, "H5SparseMatrixSeed")) {
-        load_into_memory_sparse(x@filepath, x@name, nrow=nrow(x), ncol=ncol(x), byrow=is(x, "CSR_H5SparseMatrixSeed"), forced_int=force.integer)
+        load_into_memory_sparse(x@filepath, x@group, nrow=nrow(x), ncol=ncol(x), byrow=is(x, "CSR_H5SparseMatrixSeed"), forced_int=force.integer)
     } else {
         stop("unsupported seed type '", class(x)[1], "'")
     }

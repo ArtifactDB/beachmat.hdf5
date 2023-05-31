@@ -30,7 +30,7 @@ NULL
 #' @importFrom HDF5Array H5SparseMatrixSeed
 setMethod("initializeCpp", "H5SparseMatrixSeed", function(x, ..., memorize = FALSE) {
     if (memorize) {
-        checkMemoryCache(paste("hdf5-sparse", x@filepath, x@name, sep=":"), function() loadIntoMemory(x))
+        checkMemoryCache("beachmat.hdf5", paste("sparse", x@filepath, x@group, sep=":"), function() loadIntoMemory(x))
     } else {
         initialize_from_hdf5_sparse(x@filepath, x@group, nrow=nrow(x), ncol=ncol(x), byrow=is(x, "CSR_H5SparseMatrixSeed"))
     }
@@ -42,7 +42,7 @@ setMethod("initializeCpp", "H5SparseMatrixSeed", function(x, ..., memorize = FAL
 #' @importFrom beachmat checkMemoryCache
 setMethod("initializeCpp", "HDF5ArraySeed", function(x, ..., memorize = FALSE) {
     if (memorize) {
-        checkMemoryCache(paste("hdf5-dense", x@filepath, x@name, sep=":"), function() loadIntoMemory(x))
+        checkMemoryCache("beachmat.hdf5", paste("dense", x@filepath, x@name, sep=":"), function() loadIntoMemory(x))
     } else {
         initialize_from_hdf5_dense(x@filepath, x@name)
     }

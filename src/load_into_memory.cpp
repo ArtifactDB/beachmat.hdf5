@@ -40,7 +40,7 @@ SEXP load_into_memory_sparse_i_max(const std::string& file, const std::string& n
 // TODO: migrate internal type choices to tatami_hdf5.
 std::pair<bool, bool> check_type(const std::string& file, const std::string& name) {
     H5::H5File handle(file, H5F_ACC_RDONLY);
-    auto xhandle = handle.openDataSet(name + "/data");
+    auto xhandle = handle.openDataSet(name);
     auto xtype = xhandle.getDataType();
 
     bool is_ushort = false;
@@ -55,7 +55,7 @@ std::pair<bool, bool> check_type(const std::string& file, const std::string& nam
 
 //[[Rcpp::export(rng=false)]]
 SEXP load_into_memory_sparse(std::string file, std::string name, int nrow, int ncol, bool byrow, bool forced_int) {
-    auto inspected = check_type(file, name);
+    auto inspected = check_type(file, name + "/data");
     auto is_float = inspected.first;
     auto is_ushort = inspected.second;
 
