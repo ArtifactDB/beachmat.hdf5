@@ -13,7 +13,7 @@ else
 fi
 
 cd source-tatami_hdf5
-git checkout e22ca08b1aaf75ca49c22c423684a4932f9e2f50
+git checkout 76626f2c48d4b22ad335448eae100e895112926e
 rm -rf ../tatami_hdf5
 cp -r include/tatami_hdf5/ ../tatami_hdf5
 git checkout master
