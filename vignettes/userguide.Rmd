@@ -1,0 +1,73 @@
+---
+title: "Using HDF5-backed matrices with beachmat"
+author: "Aaron Lun"
+package: beachmat.hdf5
+output: 
+  BiocStyle::html_document:
+    toc_float: yes
+vignette: >
+  %\VignetteIndexEntry{User guide}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}  
+---
+
+```{r, echo=FALSE, results="hide", message=FALSE}
+require(knitr)
+opts_chunk$set(error=FALSE, message=FALSE, warning=FALSE)
+```
+
+# Overview 
+
+`r Biocpkg("beachmat.hdf5")` provides a C++ API to extract numeric data from HDF5-backed matrices from the `r Biocpkg("HDF5Array")` package.
+This extends the `r Biocpkg("beachmat")` package to the matrix representations in the [**tatami_hdf5**](https://github.com/tatami-inc/tatami_hdf5) library.
+By including this package, users and developers can enable **tatami**-compatible C++ code to operate natively on file-backed data via the HDF5 C library.
+
+# For users 
+
+Users can simply load the package in their R session:
+
+```{r}
+library(beachmat.hdf5)
+```
+
+This will automatically extend `r Biocpkg("beachmat")`'s functionality to `r Biocpkg("HDF5Array")` matrices.
+Any package code based on `r Biocpkg("beachmat")` will now be able to access HDF5 data natively without any further work.
+
+# For developers
+
+Developers should read the `r Biocpkg("beachmat")` developer guide if they have not done so already.
+
+Developers can import `r Biocpkg("beachmat.hdf5")` in their packages to guarantee native support for `r Biocpkg("HDF5Array")` classes.
+This registers more `initializeCpp()` methods that initializes the appropriate C++ representations for these classes.
+Of course, this adds some more dependencies to the package, which may or may not be acceptable;
+some developers may prefer to leave this choice to the user or hide it behind an optional parameter to reduce the installation burden 
+(e.g., if HDF5-backed matrices are not expected to be a common input in the package workflow).
+
+It's worth noting that `r Biocpkg("beachmat")` by itself will already work with `HDF5Matrix`, `H5SparseMatrix`, etc. objects even without loading `r Biocpkg("beachmat.hdf5")`.
+However, this is not as efficient as any package C++ code needs to go back into R to extract the matrix data via `DelayedArray::extract_array()` and friends.
+Importing `r Biocpkg("beachmat.hdf5")` provides native support without the need for calls to R functions.
+
+# In-memory caching
+
+The `initializeCpp()` methods for the `r Biocpkg("HDF5Array")` classes have an optional `memorize=` parameter.
+If this is `TRUE`, the entire matrix is loaded from the HDF5 file into memory and stored in a global cache on first use.
+Any subsequent calls to `initializeCpp()` on the same matrix instance will re-use the cached value.
+
+In-memory caching is intended for functions or workflows that need to iterate through the matrix multiple times.
+By setting `memorize=TRUE`, developers can pay an up-front loading cost to avoid the repeated penalty of disk access on subsequent iterations.
+Obviously, this assumes that the matrix is still small enough that an in-memory store is feasible.
+
+For long-running analyses, users may call `beachmat::flushMemoryCache()` to clear the cache.
+
+# Other comments
+
+`r Biocpkg("beachmat.hdf5")` vendors the [**tatami_hdf5**](https://github.com/tatami-inc/tatami_hdf5) libraries,
+which can be made available to package C++ code by including `beachmat.hdf5` in the package `LinkingTo`.
+However, if this is done, developers should `#include "Rtatami_hdf5.hpp"` rather than including the **tatami_hdf5** headers directly.
+The former will define the appropriate macros for thread-safe access to the HDF5 file.
+
+# Session information {-}
+
+```{r}
+sessionInfo()
+```
