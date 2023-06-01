@@ -1,6 +1,4 @@
-#include "Rtatami.h"
-
-#include "tatami_hdf5/tatami_hdf5.hpp"
+#include "Rtatami_hdf5.h"
 #include <string>
 
 template<bool ROW, typename Tx, typename Ti>

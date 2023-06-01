@@ -10,6 +10,9 @@ test_that("initialization works correctly for dense HDF5 arrays", {
     expect_identical(beachmat:::tatami_dim(ptr), dim(y))
     expect_identical(beachmat:::tatami_row(ptr, 1), y[1,])
     expect_identical(beachmat:::tatami_column(ptr, 2), y[,2])
+
+    expect_identical(beachmat:::tatami_row_sums(ptr, 2), rowSums(y))
+    expect_identical(beachmat:::tatami_column_sums(ptr, 2), colSums(y))
 })
 
 test_that("memorization works correctly for dense HDF5 arrays", {
