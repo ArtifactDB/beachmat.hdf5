@@ -20,7 +20,8 @@ Suggests:
     BiocStyle,
     knitr,
     rmarkdown,
-    rhdf5
+    rhdf5,
+    Matrix
 LinkingTo: 
     Rcpp, 
     beachmat,
