@@ -13,7 +13,7 @@ else
 fi
 
 cd source-tatami_hdf5
-git checkout master
+git checkout v2.0.0
 rm -rf ../tatami_hdf5
 cp -r include/tatami_hdf5/ ../tatami_hdf5
 git checkout master
