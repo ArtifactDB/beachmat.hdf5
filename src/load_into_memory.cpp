@@ -1,4 +1,6 @@
-#include "Rtatami_hdf5.h"
+#include "Rcpp.h"
+#include "Rtatami.h"
+#include "tatami_hdf5/tatami_hdf5.hpp"
 #include <string>
 
 template<typename Tx, typename Ti>
