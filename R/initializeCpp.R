@@ -3,9 +3,12 @@
 #' Initialize C++ representations of HDF5-backed matrices based on their \pkg{HDF5Array} representations.
 #'
 #' @param x A \pkg{HDF5Array} seed object.
+#' @param hdf5.cache.size Integer scalar specifying the size of the cache in bytes during data extraction from a HDF5 matrix.
+#' Larger values reduce disk I/O during random access to the matrix, at the cost of increased memory usage.
+#' @param hdf5.realize See the \code{realize} option in \code{\link{initializeOptions}}.
+#' @param memorize Deprecated, use \code{hdf5.realize} instead.
+#' @param hdf5.realize.force.integer See the \code{force.integer} option in \code{\link{initializeOptions}}.
 #' @param ... Further arguments, ignored.
-#' @param memorize Logical scalar specifying whether to load the matrix data in \code{x} into memory, if it has not already been loaded.
-#' See \code{\link{checkMemoryCache}} for details.
 #'
 #' @return An external pointer that can be used in any \pkg{tatami}-compatible function.
 #'
@@ -28,11 +31,18 @@ NULL
 #' @importFrom beachmat initializeCpp
 #' @importFrom beachmat checkMemoryCache
 #' @importFrom HDF5Array H5SparseMatrixSeed
-setMethod("initializeCpp", "H5SparseMatrixSeed", function(x, ..., memorize = FALSE) {
+setMethod("initializeCpp", "H5SparseMatrixSeed", function(
+    x,
+    ...,
+    hdf5.cache.size = getAutoBlockSize(),
+    hdf5.realize = initializeOptions("realize"), 
+    memorize = hdf5.realize, 
+    hdf5.realize.force.integer = initializeOptions("realize.force.integer"))
+{
     if (memorize) {
-        checkMemoryCache("beachmat.hdf5", paste("sparse", x@filepath, x@group, sep=":"), function() loadIntoMemory(x))
+        checkMemoryCache("beachmat.hdf5", paste("sparse", x@filepath, x@group, sep=":"), function() loadIntoMemory(x, force.integer=hdf5.realize.force.integer))
     } else {
-        initialize_from_hdf5_sparse(x@filepath, x@group, nrow=nrow(x), ncol=ncol(x), csr=is(x, "CSR_H5SparseMatrixSeed"), cache_size=getAutoBlockSize())
+        initialize_from_hdf5_sparse(x@filepath, x@group, nrow=nrow(x), ncol=ncol(x), csr=is(x, "CSR_H5SparseMatrixSeed"), cache_size=hdf5.cache.size)
     }
 })
 
@@ -40,10 +50,17 @@ setMethod("initializeCpp", "H5SparseMatrixSeed", function(x, ..., memorize = FAL
 #' @rdname initializeCpp
 #' @importFrom HDF5Array HDF5ArraySeed
 #' @importFrom beachmat checkMemoryCache
-setMethod("initializeCpp", "HDF5ArraySeed", function(x, ..., memorize = FALSE) {
+setMethod("initializeCpp", "HDF5ArraySeed", function(
+    x,
+    ...,
+    hdf5.cache.size = getAutoBlockSize(),
+    hdf5.realize = initializeOptions("realize"),
+    memorize = hdf5.realize,
+    hdf5.realize.force.integer = initializeOptions("realize.force.integer"))
+{
     if (memorize) {
-        checkMemoryCache("beachmat.hdf5", paste("dense", x@filepath, x@name, sep=":"), function() loadIntoMemory(x))
+        checkMemoryCache("beachmat.hdf5", paste("dense", x@filepath, x@name, sep=":"), function() loadIntoMemory(x, force.integer=hdf5.realize.force.integer))
     } else {
-        initialize_from_hdf5_dense(x@filepath, x@name, transpose=TRUE, cache_size=getAutoBlockSize())
+        initialize_from_hdf5_dense(x@filepath, x@name, transpose=TRUE, cache_size=hdf5.cache.size)
     }
 })

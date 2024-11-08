@@ -17,8 +17,8 @@ test_that("initialization works correctly for sparse HDF5 arrays", {
 })
 
 test_that("memorization works correctly for sparse HDF5 arrays", {
-    ptr1 <- initializeCpp(z, memorize=TRUE)
-    ptr2 <- initializeCpp(z, memorize=TRUE)
+    ptr1 <- initializeCpp(z, hdf5.realize=TRUE)
+    ptr2 <- initializeCpp(z, hdf5.realize=TRUE)
     expect_identical(capture.output(print(ptr1)), capture.output(print(ptr2)))
 
     expect_identical(beachmat:::tatami_row(ptr1, 35), y[35,])
@@ -42,8 +42,8 @@ h5write(y2@p, temp, "foo/indptr")
 z <- DelayedArray(H5SparseMatrixSeed(temp, "foo", dim=dim(y2), sparse.layout="CSC"))
 
 test_that("memorization works correctly for sparse integer HDF5 arrays", {
-    ptr1 <- initializeCpp(z, memorize=TRUE)
-    ptr2 <- initializeCpp(z, memorize=TRUE)
+    ptr1 <- initializeCpp(z, hdf5.realize=TRUE)
+    ptr2 <- initializeCpp(z, hdf5.realize=TRUE)
     expect_identical(capture.output(print(ptr1)), capture.output(print(ptr2)))
 
     expect_equal(beachmat:::tatami_row(ptr1, 35), y2[35,])
@@ -64,8 +64,8 @@ h5write(y2@p, temp, "foo/indptr")
 z <- DelayedArray(H5SparseMatrixSeed(temp, "foo", dim=dim(y2), sparse.layout="CSC"))
 
 test_that("memorization works correctly for sparse small integer HDF5 arrays", {
-    ptr1 <- initializeCpp(z, memorize=TRUE)
-    ptr2 <- initializeCpp(z, memorize=TRUE)
+    ptr1 <- initializeCpp(z, hdf5.realize=TRUE)
+    ptr2 <- initializeCpp(z, hdf5.realize=TRUE)
     expect_identical(capture.output(print(ptr1)), capture.output(print(ptr2)))
 
     expect_equal(beachmat:::tatami_row(ptr1, 8), y2[8,])

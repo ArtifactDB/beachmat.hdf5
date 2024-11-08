@@ -6,17 +6,37 @@
 \alias{initializeCpp,HDF5ArraySeed-method}
 \title{Initialize HDF5-backed matrices.}
 \usage{
-\S4method{initializeCpp}{H5SparseMatrixSeed}(x, ..., memorize = FALSE)
+\S4method{initializeCpp}{H5SparseMatrixSeed}(
+  x,
+  ...,
+  hdf5.cache.size = getAutoBlockSize(),
+  hdf5.realize = initializeOptions("realize"),
+  memorize = hdf5.realize,
+  hdf5.realize.force.integer = initializeOptions("realize.force.integer")
+)
 
-\S4method{initializeCpp}{HDF5ArraySeed}(x, ..., memorize = FALSE)
+\S4method{initializeCpp}{HDF5ArraySeed}(
+  x,
+  ...,
+  hdf5.cache.size = getAutoBlockSize(),
+  hdf5.realize = initializeOptions("realize"),
+  memorize = hdf5.realize,
+  hdf5.realize.force.integer = initializeOptions("realize.force.integer")
+)
 }
 \arguments{
 \item{x}{A \pkg{HDF5Array} seed object.}
 
 \item{...}{Further arguments, ignored.}
 
-\item{memorize}{Logical scalar specifying whether to load the matrix data in \code{x} into memory, if it has not already been loaded.
-See \code{\link{checkMemoryCache}} for details.}
+\item{hdf5.cache.size}{Integer scalar specifying the size of the cache in bytes during data extraction from a HDF5 matrix.
+Larger values reduce disk I/O during random access to the matrix, at the cost of increased memory usage.}
+
+\item{hdf5.realize}{See the \code{realize} option in \code{\link{initializeOptions}}.}
+
+\item{memorize}{Deprecated, use \code{hdf5.realize} instead.}
+
+\item{hdf5.realize.force.integer}{See the \code{force.integer} option in \code{\link{initializeOptions}}.}
 }
 \value{
 An external pointer that can be used in any \pkg{tatami}-compatible function.
